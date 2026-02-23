@@ -9,6 +9,10 @@ import org.springframework.retry.support.RetryTemplate;
 
 /**
  * Retry Configuration for handling transient failures
+ * Handles:
+ * - OptimisticLockException (concurrent modifications)
+ * - Deadlocks (PostgreSQL error code 40001)
+ * - Transient database errors
  */
 @Configuration
 @EnableRetry
@@ -18,16 +22,17 @@ public class RetryConfig {
     public RetryTemplate retryTemplate() {
         RetryTemplate retryTemplate = new RetryTemplate();
 
-        // Retry policy
+        // Retry policy - retry up to 3 times
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
         retryPolicy.setMaxAttempts(3);
         retryTemplate.setRetryPolicy(retryPolicy);
 
         // Backoff policy (exponential backoff)
+        // Helps prevent thundering herd and reduces deadlock probability
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
-        backOffPolicy.setInitialInterval(1000); // 1 second
-        backOffPolicy.setMultiplier(2.0);
-        backOffPolicy.setMaxInterval(10000); // 10 seconds
+        backOffPolicy.setInitialInterval(100); // 100ms initial delay
+        backOffPolicy.setMultiplier(2.0); // Double the delay each retry
+        backOffPolicy.setMaxInterval(2000); // Max 2 seconds
         retryTemplate.setBackOffPolicy(backOffPolicy);
 
         return retryTemplate;
