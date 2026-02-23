@@ -11,6 +11,10 @@ import jakarta.persistence.EntityManagerFactory;
 
 /**
  * JPA Configuration
+ * 
+ * Configures JPA transaction management with deadlock detection.
+ * PostgreSQL automatically detects deadlocks and rolls back one of the transactions.
+ * The retry mechanism in use cases will handle deadlock retries.
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.informacolombia.prueba.infrastructure.persistence")
@@ -21,6 +25,8 @@ public class JpaConfig {
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
+        // Default timeout helps prevent long-running transactions that can cause deadlocks
+        transactionManager.setDefaultTimeout(30); // 30 seconds
         return transactionManager;
     }
 }
