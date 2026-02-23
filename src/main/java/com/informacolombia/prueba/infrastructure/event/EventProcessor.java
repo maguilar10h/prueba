@@ -22,11 +22,14 @@ public class EventProcessor {
             logger.info("Processing event: type={}, occurredOn={}", 
                     event.eventType(), event.occurredOn());
 
-            switch (event) {
-                case OrderCreatedEvent orderCreated -> handleOrderCreated(orderCreated);
-                case OrderStatusChangedEvent statusChanged -> handleOrderStatusChanged(statusChanged);
-                case InventoryReservedEvent inventoryReserved -> handleInventoryReserved(inventoryReserved);
-                case InventoryReleasedEvent inventoryReleased -> handleInventoryReleased(inventoryReleased);
+            if (event instanceof OrderCreatedEvent orderCreated) {
+                handleOrderCreated(orderCreated);
+            } else if (event instanceof OrderStatusChangedEvent statusChanged) {
+                handleOrderStatusChanged(statusChanged);
+            } else if (event instanceof InventoryReservedEvent inventoryReserved) {
+                handleInventoryReserved(inventoryReserved);
+            } else if (event instanceof InventoryReleasedEvent inventoryReleased) {
+                handleInventoryReleased(inventoryReleased);
             }
 
             logger.info("Event processed successfully: {}", event.eventType());

@@ -13,8 +13,8 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
-	sourceCompatibility = '21'
-	targetCompatibility = '21'
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -99,7 +99,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Flyway configuration
 flyway {
 	url = project.findProperty('flyway.url') ?: 'jdbc:postgresql://localhost:5432/prueba_db'
 	user = project.findProperty('flyway.user') ?: 'prueba_user'
