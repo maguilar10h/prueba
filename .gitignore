@@ -1,0 +1,40 @@
+# Compiled class files
+*.class
+
+# Gradle build directory
+build/
+.gradle/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+*.nar
+
+# Exclude JAR files in libs (if you want to keep them, remove this line)
+# But typically build artifacts should be ignored
+libs/*.jar
+
+# Temporary files
+*.tmp
+*.temp
