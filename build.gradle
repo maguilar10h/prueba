@@ -13,13 +13,19 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+	sourceCompatibility = '21'
+	targetCompatibility = '21'
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.release = 21
+	options.encoding = 'UTF-8'
 }
 
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	// Configuración para Flyway
 	flywayRuntime.extendsFrom(runtimeClasspath)
 }
 
